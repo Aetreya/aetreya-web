@@ -11,9 +11,7 @@ Request Body:
     "username": "data",
     "password": "data",
     "first_name": "data",
-    "last_name": "data",
-    "email": "data",
-    "phone": "0812"
+    "last_name": "data"
 }
 ```
 
@@ -24,10 +22,8 @@ Response Body Success:
     "data": {
         "username": "data",
         "first_name": "data",
-        "last_name": "data",
-        "email": "data",
-        "phone": "0812"
-    },
+        "last_name": "data"
+    }
 }
 ```
 
@@ -74,10 +70,11 @@ Response Body Error:
 
 Endpoint: GET /api/users/current
 
-Headers: 
-- Authorization: token
+Headers:
 
-Response Body Success: 
+-   Authorization: token
+
+Response Body Success:
 
 ```json
 {
@@ -103,8 +100,9 @@ Response Body Error:
 
 Endpoint: PATCH /api/users/current
 
-Headers: 
-- Authorization: token
+Headers:
+
+-   Authorization: token
 
 Request Body:
 
@@ -114,7 +112,7 @@ Request Body:
     "first_name": "new data", //optional
     "last_name": "new data", //optional
     "email": "new data", //optional
-    "phone": "new data", //optional
+    "phone": "new data" //optional
 }
 ```
 
@@ -139,8 +137,9 @@ Response Body Error:
 
 Endpoint: DELETE /api/users/logout
 
-Headers: 
-- Authorization: token
+Headers:
+
+-   Authorization: token
 
 Response Body Success:
 
