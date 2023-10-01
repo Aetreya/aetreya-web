@@ -10,8 +10,7 @@ Request Body:
 {
     "username": "data",
     "password": "data",
-    "first_name": "data",
-    "last_name": "data"
+    "name": "data"
 }
 ```
 
@@ -19,11 +18,7 @@ Response Body Success:
 
 ```json
 {
-    "data": {
-        "username": "data",
-        "first_name": "data",
-        "last_name": "data"
-    }
+    "data": "Ok"
 }
 ```
 
@@ -37,7 +32,7 @@ Response Body Error:
 
 ## Login
 
-Endpoint: POST /api/users/login
+Endpoint: POST /api/auth/login
 
 Request Body:
 
@@ -53,7 +48,8 @@ Response Body Success:
 ```json
 {
     "data": {
-        "token": "unique-token"
+        "token": "unique-token",
+        "expirtedAt": 333 // milliseconds
     }
 }
 ```
@@ -70,9 +66,9 @@ Response Body Error:
 
 Endpoint: GET /api/users/current
 
-Headers:
+Request Headers:
 
--   Authorization: token
+-   X-API-TOKEN : token (Mandatory)
 
 Response Body Success:
 
@@ -80,10 +76,8 @@ Response Body Success:
 {
     "data": {
         "username": "data",
-        "first_name": "data",
-        "last_name": "data",
-        "email": "data",
-        "phone": "0812"
+        "name": "data",
+        "role": "data"
     }
 }
 ```
@@ -100,19 +94,16 @@ Response Body Error:
 
 Endpoint: PATCH /api/users/current
 
-Headers:
+Request Headers:
 
--   Authorization: token
+-   X-API-TOKEN : token (Mandatory)
 
 Request Body:
 
 ```json
 {
     "password": "new data", //optional
-    "first_name": "new data", //optional
-    "last_name": "new data", //optional
-    "email": "new data", //optional
-    "phone": "new data" //optional
+    "name": "new name" //optional
 }
 ```
 
@@ -120,8 +111,9 @@ Response Body Success:
 
 ```json
 {
-    "username": "data",
-    "first_name": "updated data"
+    "username": "updated data",
+    "name": "updated data",
+    "role": "role"
 }
 ```
 
@@ -135,11 +127,11 @@ Response Body Error:
 
 ## Logout
 
-Endpoint: DELETE /api/users/logout
+Endpoint: DELETE /api/auth/logout
 
-Headers:
+Request Headers:
 
--   Authorization: token
+-   X-API-TOKEN : token (Mandatory)
 
 Response Body Success:
 
