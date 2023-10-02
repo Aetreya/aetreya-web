@@ -10,6 +10,9 @@ function Home() {
           <Link to="/profile">Halaman Profil</Link>
         </p>
         <p>
+          <Link to="/forum"> Halaman Forum</Link>
+        </p>
+        <p>
           <Link to="/signin">Halaman Pendaftaran</Link>
         </p>
         <p>
