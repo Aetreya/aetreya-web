@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import Signin from '../pages/Signin';
 import Signup from '../pages/Signup';
+import NotFound from '../pages/Error/NotFound';
 
 function RootRouter() {
   return (
@@ -15,6 +16,7 @@ function RootRouter() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/forum" element={<Forum />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );
