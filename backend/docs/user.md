@@ -49,7 +49,7 @@ Response Body Success:
 {
     "data": {
         "token": "unique-token",
-        "expirtedAt": 333 // milliseconds
+        "expiredAt": 333 // milliseconds
     }
 }
 ```
