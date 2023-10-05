@@ -29,11 +29,6 @@ function Navbar() {
               Masuk
             </Link>
           </li>
-          <li>
-            <Link to="/signup" className="text-link">
-              Daftar
-            </Link>
-          </li>
         </ul>
       </nav>
     </div>
