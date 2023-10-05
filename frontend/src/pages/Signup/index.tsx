@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react';
 import './signup.css';
 import { UserRegisterRequest } from '../../types/userRegisterRequest';
-import register from '../../services/user.services';
+import { register } from '../../services/user.services';
 
 function Signup() {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,6 +9,7 @@ function Signup() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setMessage(null);
     setIsLoading(true);
 
     const data: UserRegisterRequest = {
