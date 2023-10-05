@@ -4,6 +4,7 @@ import aetreya.restfulapi.entity.User;
 import aetreya.restfulapi.model.LoginUserRequest;
 import aetreya.restfulapi.model.TokenResponse;
 import aetreya.restfulapi.model.WebResponse;
+import aetreya.restfulapi.repository.PostRepository;
 import aetreya.restfulapi.repository.UserRepository;
 import aetreya.restfulapi.security.BCrypt;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -31,10 +32,14 @@ class AuthControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
+        postRepository.deleteAll();
         userRepository.deleteAll();
     }
 
