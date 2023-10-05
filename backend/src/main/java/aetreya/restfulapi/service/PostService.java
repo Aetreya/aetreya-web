@@ -66,13 +66,14 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostResponse getById(String id) {
-        Post post = postRepository.findById(id)
+    public PostResponse getById(String postId) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
 
         return toPostResponse(post);
     }
 
+    @Transactional
     public PostResponse update(User user, UpdatePostRequest request) {
         validationService.validate(request);
 
@@ -85,5 +86,13 @@ public class PostService {
         postRepository.save(post);
 
         return toPostResponse(post);
+    }
+
+    @Transactional
+    public void delete(User user, String postId) {
+        Post post = postRepository.findFirstByUserAndId(user, postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+
+        postRepository.delete(post);
     }
 }

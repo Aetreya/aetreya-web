@@ -25,9 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -139,6 +137,37 @@ class PostControllerTest {
             assertEquals("testing", response.getData().get(0).getBody());
 
             assertTrue(postRepository.existsById(response.getData().get(0).getId()));
+        });
+    }
+
+    @Test
+    void getSinglePostNotFound() throws Exception {
+        User user = new User();
+        user.setUsername("test");
+        user.setName("test");
+        user.setPassword(BCrypt.hashpw("test", BCrypt.gensalt()));
+        user.setRole("user");
+        userRepository.save(user);
+
+        Post post = new Post();
+        post.setId(UUID.randomUUID().toString());
+        post.setTitle("testing");
+        post.setBody("testing");
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
+        post.setUser(user);
+        postRepository.save(post);
+
+        mockMvc.perform(
+                get("/api/posts/salah")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andExpectAll(
+                status().isNotFound()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNotNull(response.getErrors());
         });
     }
 
@@ -256,6 +285,106 @@ class PostControllerTest {
             assertEquals("test update", response.getData().getBody());
 
             assertTrue(postRepository.existsById(response.getData().getId()));
+        });
+    }
+
+    @Test
+    void deletePostUnauthorized() throws Exception {
+        User user = new User();
+        user.setUsername("test");
+        user.setName("test");
+        user.setPassword(BCrypt.hashpw("test", BCrypt.gensalt()));
+        user.setRole("user");
+        userRepository.save(user);
+
+        Post post = new Post();
+        post.setId(UUID.randomUUID().toString());
+        post.setTitle("testing");
+        post.setBody("testing");
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
+        post.setUser(user);
+        postRepository.save(post);
+
+        mockMvc.perform(
+                delete("/api/posts/salah")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andExpectAll(
+                status().isUnauthorized()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNotNull(response.getErrors());
+        });
+    }
+    @Test
+    void deletePostNotFound() throws Exception {
+        User user = new User();
+        user.setUsername("test");
+        user.setName("test");
+        user.setPassword(BCrypt.hashpw("test", BCrypt.gensalt()));
+        user.setRole("user");
+        user.setToken("test");
+        user.setTokenExpiredAt(System.currentTimeMillis() + 10000000);
+        userRepository.save(user);
+
+        Post post = new Post();
+        post.setId(UUID.randomUUID().toString());
+        post.setTitle("testing");
+        post.setBody("testing");
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
+        post.setUser(user);
+        postRepository.save(post);
+
+        mockMvc.perform(
+                delete("/api/posts/salah")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-API-TOKEN", "test")
+        ).andExpectAll(
+                status().isNotFound()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNotNull(response.getErrors());
+        });
+    }
+
+    @Test
+    void deletePostSuccess() throws Exception {
+        User user = new User();
+        user.setUsername("test");
+        user.setName("test");
+        user.setPassword(BCrypt.hashpw("test", BCrypt.gensalt()));
+        user.setRole("user");
+        user.setToken("test");
+        user.setTokenExpiredAt(System.currentTimeMillis() + 10000000);
+        userRepository.save(user);
+
+        Post post = new Post();
+        post.setId(UUID.randomUUID().toString());
+        post.setTitle("testing");
+        post.setBody("testing");
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
+        post.setUser(user);
+        postRepository.save(post);
+
+        mockMvc.perform(
+                delete("/api/posts/" + post.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("X-API-TOKEN", "test")
+        ).andExpectAll(
+                status().isOk()
+        ).andDo(result -> {
+            WebResponse<String> response = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {
+            });
+            assertNull(response.getErrors());
+
+            assertFalse(postRepository.existsById(post.getId()));
         });
     }
 }

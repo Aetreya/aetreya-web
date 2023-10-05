@@ -9,7 +9,6 @@ import aetreya.restfulapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
@@ -57,5 +56,15 @@ public class PostController {
 
         PostResponse postResponse = postService.update(user, request);
         return WebResponse.<PostResponse>builder().data(postResponse).build();
+    }
+
+    @DeleteMapping(
+            path = "/api/posts/{postId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String> delete(User user, @PathVariable String postId) {
+        postService.delete(user, postId);
+
+        return WebResponse.<String>builder().data("OK").build();
     }
 }
