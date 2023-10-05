@@ -4,6 +4,7 @@ import aetreya.restfulapi.entity.Post;
 import aetreya.restfulapi.entity.User;
 import aetreya.restfulapi.model.CreatePostRequest;
 import aetreya.restfulapi.model.PostResponse;
+import aetreya.restfulapi.model.UpdatePostRequest;
 import aetreya.restfulapi.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,19 @@ public class PostService {
     @Autowired
     private ValidationService validationService;
 
+    private PostResponse toPostResponse(Post post) {
+        PostResponse postResponse = new PostResponse();
+        postResponse.setId(post.getId());
+        postResponse.setTitle(post.getTitle());
+        postResponse.setBody(post.getBody());
+        postResponse.setComments(post.getComments());
+        postResponse.setCreatedAt(post.getCreatedAt());
+        postResponse.setUpdatedAt(post.getUpdatedAt());
+        postResponse.setUsername(post.getUser().getUsername());
+
+        return postResponse;
+    }
+
     @Transactional
     public PostResponse create(User user, CreatePostRequest request) {
         validationService.validate(request);
@@ -40,17 +54,15 @@ public class PostService {
         postRepository.save(post);
 
         return toPostResponse(post);
-    };
+    }
 
     @Transactional(readOnly = true)
     public List<PostResponse> getAll() {
         List<Post> posts = postRepository.findAll();
 
-        List<PostResponse> postResponses = posts.stream()
+        return posts.stream()
                 .map(this::toPostResponse)
                 .collect(Collectors.toList());
-
-        return postResponses;
     }
 
     @Transactional(readOnly = true)
@@ -61,15 +73,17 @@ public class PostService {
         return toPostResponse(post);
     }
 
-    private PostResponse toPostResponse(Post post) {
-        PostResponse postResponse = new PostResponse();
-        postResponse.setId(post.getId());
-        postResponse.setTitle(post.getTitle());
-        postResponse.setBody(post.getBody());
-        postResponse.setCreatedAt(post.getCreatedAt());
-        postResponse.setUpdatedAt(post.getUpdatedAt());
-        postResponse.setUsername(post.getUser().getUsername());
+    public PostResponse update(User user, UpdatePostRequest request) {
+        validationService.validate(request);
 
-        return postResponse;
+        Post post = postRepository.findFirstByUserAndId(user, request.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+
+        post.setTitle(request.getTitle());
+        post.setBody(request.getBody());
+        post.setUpdatedAt(LocalDateTime.now());
+        postRepository.save(post);
+
+        return toPostResponse(post);
     }
 }

@@ -1,27 +1,27 @@
 package aetreya.restfulapi.model;
 
-import aetreya.restfulapi.entity.Comment;
-import aetreya.restfulapi.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostResponse {
+public class UpdatePostRequest {
 
+    @JsonIgnore
+    @NotBlank
+    @Size(max = 255)
     private String id;
+
+    @Size(max = 255)
     private String title;
+
+    @Size(max = 65000)
     private String body;
-    private List<Comment> comments;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String username;
 }

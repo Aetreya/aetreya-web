@@ -3,6 +3,7 @@ package aetreya.restfulapi.controller;
 import aetreya.restfulapi.entity.User;
 import aetreya.restfulapi.model.CreatePostRequest;
 import aetreya.restfulapi.model.PostResponse;
+import aetreya.restfulapi.model.UpdatePostRequest;
 import aetreya.restfulapi.model.WebResponse;
 import aetreya.restfulapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,23 @@ public class PostController {
     }
 
     @GetMapping(
-            path = "/api/posts/{id}",
+            path = "/api/posts/{postId}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WebResponse<PostResponse> get(@PathVariable String id) {
-        PostResponse postResponse = postService.getById(id);
+    public WebResponse<PostResponse> get(@PathVariable String postId) {
+        PostResponse postResponse = postService.getById(postId);
+        return WebResponse.<PostResponse>builder().data(postResponse).build();
+    }
+
+    @PatchMapping (
+            path="/api/posts/{postId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<PostResponse> update(User user, @RequestBody UpdatePostRequest request, @PathVariable String postId) {
+        request.setId(postId);
+
+        PostResponse postResponse = postService.update(user, request);
         return WebResponse.<PostResponse>builder().data(postResponse).build();
     }
 }
