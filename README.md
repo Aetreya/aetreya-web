@@ -42,7 +42,7 @@ Before you begin, ensure you have met the following requirements:
 
 ### Frontend Setup
 
-1. Install dependencies
+1. Navigate to frontend directory and Install the dependencies
 
    ```bash
    npm install
