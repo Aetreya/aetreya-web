@@ -25,8 +25,7 @@ export default function Register() {
     register(data)
       .then(() => {
         setIsLoading(false);
-        e.currentTarget.full_name.value = null;
-        setNotif({ message: 'Registrasi berhasil, silakan', success: true });
+        setNotif({ message: 'Registrasi berhasil', success: true });
       })
       .catch((error) => {
         setIsLoading(false);
@@ -56,16 +55,7 @@ export default function Register() {
       </form>
       <div className="flasher">
         {isLoading && <p>Loading...</p>}
-        {notif.message && (
-          <p>
-            {notif.message}
-            {notif.success && (
-              <Link to="/signin" className="text-link">
-                masuk
-              </Link>
-            )}
-          </p>
-        )}
+        {notif.message && <p>{notif.message}</p>}
       </div>
       <p className="login-notice">
         Sudah memiliki akun? Silakan{' '}
