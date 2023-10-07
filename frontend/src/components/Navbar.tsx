@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom';
 import './navbar.css';
 import { useCookies } from 'react-cookie';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 
-function Navbar() {
+export default function Navbar() {
   const [, , removeCookie] = useCookies(['token']);
   const authorized = useAuth();
+
   const handleLogout = () => {
     removeCookie('token');
+
+    window.location.href = '/';
   };
 
   return (
@@ -42,7 +45,7 @@ function Navbar() {
             </>
           ) : (
             <li>
-              <Link to="/signin" className="text-link">
+              <Link to="/auth/login" className="text-link">
                 Masuk
               </Link>
             </li>
@@ -52,5 +55,3 @@ function Navbar() {
     </div>
   );
 }
-
-export default Navbar;

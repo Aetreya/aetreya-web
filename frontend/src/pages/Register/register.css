@@ -18,3 +18,8 @@ form label {
   justify-content: center;
   align-items: center;
 }
+
+.login-notice {
+  text-align: center;
+  margin-top: 1rem;
+}

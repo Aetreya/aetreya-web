@@ -1,17 +1,18 @@
 import { FormEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
-import './signin.css';
+import { Link, useNavigate } from 'react-router-dom';
+import './login.css';
 import { useCookies } from 'react-cookie';
 import { UserLoginRequest } from '../../types/userLoginRequest';
 import { login } from '../../services/user.services';
 import { ApiResponse } from '../../types/apiResponse';
-import { UserLoginData } from '../../types/UserLoginData';
+import { UserLoginData } from '../../types/userLoginData';
+import { Flasher } from '../../types/flasher';
 
-function Signin() {
+export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<null | string>(null);
-
   const [, setCookie] = useCookies(['token', 'expiredAt']);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,9 +27,18 @@ function Signin() {
     login(data)
       .then((res: ApiResponse<UserLoginData>) => {
         const maxAge = Number(res.data?.expiredAt);
+        const flasher: Flasher = {
+          message: 'Berhasil masuk',
+          status: true,
+        };
         setIsLoading(false);
-        setMessage('Login berhasil');
+        setMessage('Berhasil masuk');
         setCookie('token', res.data?.token, { path: '/', maxAge });
+        navigate('/', {
+          state: {
+            flasher,
+          },
+        });
       })
       .catch((error) => {
         setIsLoading(false);
@@ -58,12 +68,10 @@ function Signin() {
       </div>
       <p className="signup-notice">
         Belum memiliki akun? Silakan{' '}
-        <Link to="/signup" className="text-link">
+        <Link to="/auth/register" className="text-link">
           daftar disini.
         </Link>
       </p>
     </div>
   );
 }
-
-export default Signin;

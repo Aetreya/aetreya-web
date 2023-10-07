@@ -1,18 +1,9 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Unauthorized from '../pages/Error/Unauthorized';
 
 export default function PrivateRoute() {
   const authorized = useAuth();
 
-  return authorized ? (
-    <>
-      <Navbar />
-      <Outlet />
-      <Footer />
-    </>
-  ) : (
-    <Navigate to="/unauthorized" />
-  );
+  return authorized ? <Outlet /> : <Unauthorized />;
 }

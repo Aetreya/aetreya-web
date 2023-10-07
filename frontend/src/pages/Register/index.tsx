@@ -1,15 +1,19 @@
 import { FormEvent, useState } from 'react';
-import './signup.css';
+import './register.css';
+import { Link } from 'react-router-dom';
 import { UserRegisterRequest } from '../../types/userRegisterRequest';
 import { register } from '../../services/user.services';
 
-function Signup() {
+export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [notif, setNotif] = useState<{
+    message: string | null;
+    success: boolean;
+  }>({ message: null, success: false });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setMessage(null);
+    setNotif({ message: null, success: false });
     setIsLoading(true);
 
     const data: UserRegisterRequest = {
@@ -21,11 +25,12 @@ function Signup() {
     register(data)
       .then(() => {
         setIsLoading(false);
-        setMessage('Registrasi berhasil, silakan login.');
+        e.currentTarget.full_name.value = null;
+        setNotif({ message: 'Registrasi berhasil, silakan', success: true });
       })
       .catch((error) => {
         setIsLoading(false);
-        setMessage(error.message);
+        setNotif({ message: error.message as string, success: false });
       });
   };
 
@@ -51,10 +56,23 @@ function Signup() {
       </form>
       <div className="flasher">
         {isLoading && <p>Loading...</p>}
-        {message && <p>{message}</p>}
+        {notif.message && (
+          <p>
+            {notif.message}
+            {notif.success && (
+              <Link to="/signin" className="text-link">
+                masuk
+              </Link>
+            )}
+          </p>
+        )}
       </div>
+      <p className="login-notice">
+        Sudah memiliki akun? Silakan{' '}
+        <Link to="/auth/login" className="text-link">
+          login
+        </Link>
+      </p>
     </div>
   );
 }
-
-export default Signup;

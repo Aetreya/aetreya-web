@@ -8,11 +8,13 @@ export async function register(data: UserRegisterRequest) {
       `${import.meta.env.VITE_API_BASE_URL}/api/users`,
       data,
     );
+
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data.errors);
     }
+
     throw new Error('Something went wrong');
   }
 }
@@ -23,6 +25,28 @@ export async function login(data: UserLoginRequest) {
       `${import.meta.env.VITE_API_BASE_URL}/api/auth/login`,
       data,
     );
+
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.errors);
+    }
+
+    throw new Error('Something went wrong');
+  }
+}
+
+export async function getUserData(token: string) {
+  try {
+    const config = {
+      headers: { 'X-API-TOKEN': token },
+    };
+
+    const res = await axios.get(
+      `${import.meta.env.VITE_API_BASE_URL}/api/users/current`,
+      config,
+    );
+
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
