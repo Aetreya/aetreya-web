@@ -25,9 +25,10 @@ function Signin() {
 
     login(data)
       .then((res: ApiResponse<UserLoginData>) => {
+        const maxAge = Number(res.data?.expiredAt);
         setIsLoading(false);
         setMessage('Login berhasil');
-        setCookie('token', res.data?.token, { path: '/' });
+        setCookie('token', res.data?.token, { path: '/', maxAge });
       })
       .catch((error) => {
         setIsLoading(false);

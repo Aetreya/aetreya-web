@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import './home.css';
+import useAuth from '../../hooks/useAuth';
 
 function Home() {
+  const authorized = useAuth();
+
   return (
     <div className="container">
       <h1>Selamat datang di Aetreya</h1>
@@ -27,12 +30,21 @@ function Home() {
           hic repellendus quam explicabo.
         </p>
       </section>
-      <section className="notice-signup">
-        <p>Silakan buat akun untuk mulai membuat postingan</p>
-        <Link to="/signup" className="text-link">
-          Daftar
-        </Link>
-      </section>
+      {authorized ? (
+        <section className="notice">
+          <p>Anda dapat mulai berdiskusi</p>
+          <Link to="/forum" className="text-link">
+            Forum
+          </Link>
+        </section>
+      ) : (
+        <section className="notice">
+          <p>Silakan buat akun untuk mulai membuat postingan</p>
+          <Link to="/signup" className="text-link">
+            Daftar
+          </Link>
+        </section>
+      )}
     </div>
   );
 }
