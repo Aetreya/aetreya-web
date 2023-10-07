@@ -55,8 +55,3 @@ DESCRIBE comments;
 
 SELECT *
 FROM comments;
-
-
-DROP TABLE users;
-DROP TABLE posts;
-DROP TABLE comments;
