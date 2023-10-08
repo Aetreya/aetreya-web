@@ -30,9 +30,9 @@ public class User {
     @Column(name = "token_expired_at")
     private Long tokenExpiredAt;
 
-    @OneToMany(mappedBy = "username")
+    @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "username")
+    @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 }

@@ -1,0 +1,31 @@
+.flasher-message-success {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: green;
+  color: white;
+  width: 10rem;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  top: 0.5rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 1rem;
+  border-radius: 4px;
+}
+
+.flasher-message-failed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+  color: white;
+  width: 10rem;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  top: 0.5rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 1rem;
+  border-radius: 4px;
+}
