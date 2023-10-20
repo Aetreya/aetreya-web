@@ -8,6 +8,7 @@ import Register from '../pages/Register';
 import NotFound from '../pages/Error/NotFound';
 import ProtectedRoute from './protectedRoute';
 import PrivateRoute from './privateRoute';
+import CreatePost from '../pages/Forum/CreatePost';
 
 export default function RootRouter() {
   return (
@@ -22,6 +23,7 @@ export default function RootRouter() {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/forum/posts/create" element={<CreatePost />} />
         </Route>
       </Route>
     </Routes>
